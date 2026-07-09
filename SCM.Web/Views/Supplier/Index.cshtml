@@ -1,0 +1,45 @@
+@model List<SupplierListItemViewModel>
+@{
+    ViewData["Title"] = "Suppliers";
+}
+
+<div class="scm-eyebrow"> welcome &middot; Supplier register</div>
+<h1>Suppliers</h1>
+<p style="margin: 0 0 1.5rem;"><a class="scm-btn" asp-action="Register">+ Register new supplier</a></p>
+
+@if (!Model.Any())
+{
+    <div class="scm-empty">
+        No suppliers registered yet. <a asp-action="Register">Register the first one</a>.
+    </div>
+}
+else
+{
+    <div class="scm-card">
+        <table class="scm-table">
+            <thead>
+                <tr>
+                    <th>Company</th>
+                    <th>Contact email</th>
+                    <th>Verification</th>
+                    <th>Status</th>
+                    <th>Performance</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var s in Model)
+            {
+                <tr>
+                    <td>@s.CompanyName</td>
+                    <td class="scm-mono-cell">@(s.ContactEmail ?? "—")</td>
+                    <td><span class="scm-stamp scm-stamp-@(s.VerificationStatus.ToLower())">@s.VerificationStatus</span></td>
+                    <td><span class="scm-stamp scm-stamp-@(s.StatusName.ToLower())">@s.StatusName</span></td>
+                    <td class="scm-mono-cell">@(s.PerformanceRating?.ToString("0.00") ?? "—")</td>
+                    <td><a asp-action="Details" asp-route-id="@s.Id">View →</a></td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+}

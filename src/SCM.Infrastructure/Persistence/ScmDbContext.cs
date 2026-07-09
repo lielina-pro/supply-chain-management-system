@@ -1,0 +1,37 @@
+using Microsoft.EntityFrameworkCore;
+using SCM.Domain.Entities;
+
+namespace SCM.Infrastructure.Persistence;
+
+public class ScmDbContext : DbContext
+{
+    public ScmDbContext(DbContextOptions<ScmDbContext> options) : base(options) { }
+
+    public DbSet<User>          Users         => Set<User>();
+    public DbSet<Role>          Roles         => Set<Role>();
+    public DbSet<UserRole>      UserRoles     => Set<UserRole>();
+    public DbSet<StatusType>    StatusTypes   => Set<StatusType>();
+    public DbSet<StatusHistory> StatusHistory => Set<StatusHistory>();
+    public DbSet<AuditLog>      AuditLogs     => Set<AuditLog>();
+    public DbSet<Supplier>      Suppliers     => Set<Supplier>();
+
+    // Other modules' DbSets (Products, InventoryStock, PurchaseOrders, CustomerOrders,
+    // Shipments, Payments, Notifications, DemandForecasts, ...) are added as each
+    // module is built in later weeks, per the 12-week plan.
+
+    protected override void OnModelCreating(ModelBuilder mb)
+    {
+        mb.ApplyConfigurationsFromAssembly(typeof(ScmDbContext).Assembly);
+        base.OnModelCreating(mb);
+    }
+
+    public override Task<int> SaveChangesAsync(CancellationToken ct = default)
+    {
+        foreach (var entry in ChangeTracker.Entries<User>())
+        {
+            if (entry.State == EntityState.Modified)
+                entry.Entity.UpdatedAt = DateTime.UtcNow;
+        }
+        return base.SaveChangesAsync(ct);
+    }
+}

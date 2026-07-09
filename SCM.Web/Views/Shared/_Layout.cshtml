@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - SCM</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <div class="scm-shell">
+        <aside class="scm-rail">
+            <a class="scm-brand" asp-controller="Supplier" asp-action="Index">
+                <span class="scm-brand-mark"></span>SCM System
+            </a>
+            <nav class="scm-rail-nav">
+                <div class="scm-rail-section-label">Suppliers</div>
+                <a asp-controller="Supplier" asp-action="Index">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="1"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                    Supplier list
+                </a>
+                <a asp-controller="Supplier" asp-action="Register">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                    Register supplier
+                </a>
+            </nav>
+        </aside>
+
+        <main class="scm-main">
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="scm-alert scm-alert-success">@TempData["SuccessMessage"]</div>
+            }
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="scm-alert scm-alert-error">@TempData["ErrorMessage"]</div>
+            }
+            @RenderBody()
+        </main>
+    </div>
+</body>
+</html>
