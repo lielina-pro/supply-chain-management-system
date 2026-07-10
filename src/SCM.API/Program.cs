@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using SCM.API.Middleware;
+using SCM.Application.Auth.Interfaces;
+using SCM.Application.Auth.Services;
 using SCM.Application.Common.Interfaces;
 using SCM.Application.Suppliers.Interfaces;
 using SCM.Application.Suppliers.Services;
@@ -24,11 +26,9 @@ builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 // Suppliers module (FR-02)
 builder.Services.AddScoped<ISupplierService, SupplierService>();
 
-// NOTE: IAuthService / IInventoryService / IOrderService are intentionally NOT
-// registered yet - they are placeholder interfaces for other weeks' modules.
-// AuthController's endpoints will 500 until Bethel's Week 3 auth work registers
-// a real IAuthService implementation here.
-
+// Auth module (FR-01.1, FR-01.2, FR-01.3) — Week 3: Bethel
+builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 // JWT
 var jwtKey = builder.Configuration["Jwt:Key"]!;
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -71,7 +71,32 @@ builder.Services.Configure<RequestLocalizationOptions>(o =>
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+    {
+        Name         = "Authorization",
+        Type         = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
+        Scheme       = "Bearer",
+        BearerFormat = "JWT",
+        In           = Microsoft.OpenApi.Models.ParameterLocation.Header,
+        Description  = "Enter your JWT token. Example: eyJhbGci..."
+    });
+    c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+    {
+        {
+            new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+            {
+                Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                {
+                    Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                    Id   = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
 
 var app = builder.Build();
 
