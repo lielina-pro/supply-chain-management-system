@@ -15,9 +15,17 @@ public class ScmDbContext : DbContext
     public DbSet<AuditLog>      AuditLogs     => Set<AuditLog>();
     public DbSet<Supplier>      Suppliers     => Set<Supplier>();
 
-    // Other modules' DbSets (Products, InventoryStock, PurchaseOrders, CustomerOrders,
-    // Shipments, Payments, Notifications, DemandForecasts, ...) are added as each
-    // module is built in later weeks, per the 12-week plan.
+    // Procurement module (Week 4)
+    public DbSet<Product>                 Products                 => Set<Product>();
+    public DbSet<PurchaseRequest>         PurchaseRequests         => Set<PurchaseRequest>();
+    public DbSet<PurchaseRequestItem>     PurchaseRequestItems     => Set<PurchaseRequestItem>();
+    public DbSet<PurchaseRequestApproval> PurchaseRequestApprovals => Set<PurchaseRequestApproval>();
+    public DbSet<PurchaseOrder>           PurchaseOrders           => Set<PurchaseOrder>();
+    public DbSet<PurchaseOrderItem>       PurchaseOrderItems       => Set<PurchaseOrderItem>();
+
+    // Other modules' DbSets (InventoryStock, CustomerOrders, Shipments, Payments,
+    // Notifications, DemandForecasts, ...) are added as each module is built in
+    // later weeks, per the 12-week plan.
 
     protected override void OnModelCreating(ModelBuilder mb)
     {

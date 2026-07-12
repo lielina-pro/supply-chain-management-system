@@ -17,6 +17,9 @@ public class UnitOfWork : IUnitOfWork
         StatusTypes   = new StatusTypeRepository(context);
         StatusHistory = new StatusHistoryRepository(context);
         AuditLogs     = new AuditLogRepository(context);
+        Products         = new ProductRepository(context);
+        PurchaseRequests = new PurchaseRequestRepository(context);
+        PurchaseOrders   = new PurchaseOrderRepository(context);
     }
 
     public ISupplierRepository      Suppliers     { get; }
@@ -25,6 +28,9 @@ public class UnitOfWork : IUnitOfWork
     public IStatusTypeRepository    StatusTypes   { get; }
     public IStatusHistoryRepository StatusHistory { get; }
     public IAuditLogRepository      AuditLogs     { get; }
+    public IProductRepository         Products         { get; }
+    public IPurchaseRequestRepository PurchaseRequests { get; }
+    public IPurchaseOrderRepository   PurchaseOrders   { get; }
 
     public Task<int> SaveChangesAsync(CancellationToken ct = default) => _context.SaveChangesAsync(ct);
 
