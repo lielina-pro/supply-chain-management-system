@@ -9,7 +9,10 @@ public class UserRepository : Repository<User>, IUserRepository
     public UserRepository(ScmDbContext context) : base(context) { }
 
     public async Task<User?> GetByEmailAsync(string email, CancellationToken ct = default) =>
-        await Set.FirstOrDefaultAsync(u => u.Email == email, ct);
+        await Set
+            .Include(u => u.UserRoles)
+                .ThenInclude(ur => ur.Role)
+            .FirstOrDefaultAsync(u => u.Email == email, ct);
 
     public async Task<bool> EmailExistsAsync(string email, CancellationToken ct = default) =>
         await Set.AnyAsync(u => u.Email == email, ct);
