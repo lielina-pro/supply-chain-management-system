@@ -10,7 +10,7 @@ public class PurchaseRequestRepository : Repository<PurchaseRequest>, IPurchaseR
 
     public async Task<PurchaseRequest?> GetWithDetailsAsync(int id, CancellationToken ct = default) =>
         await Set.Include(r => r.Items).ThenInclude(i => i.Product)
-                  .Include(r => r.Approvals)
+                  .Include(r => r.Approvals).ThenInclude(a => a.ApproverUser)
                   .Include(r => r.Status)
                   .Include(r => r.RequestedByUser)
                   .FirstOrDefaultAsync(r => r.Id == id && !r.IsArchived, ct);
