@@ -13,6 +13,8 @@ using SCM.Infrastructure.Identity;
 using SCM.Infrastructure.Persistence;
 using SCM.Infrastructure.Persistence.Seed;
 using System.Text;
+using SCM.Application.Procurement.Interfaces;
+using SCM.Application.Procurement.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +31,10 @@ builder.Services.AddScoped<ISupplierService, SupplierService>();
 // Auth module (FR-01.1, FR-01.2, FR-01.3) — Week 3: Bethel
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+
+// Procurement module (FR-03) — Week 4: Bethel
+builder.Services.AddScoped<IPurchaseRequestService, PurchaseRequestService>();
+builder.Services.AddScoped<IPurchaseOrderService, PurchaseOrderService>();
 // JWT
 var jwtKey = builder.Configuration["Jwt:Key"]!;
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -42,7 +48,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuerSigningKey = true,
             ValidIssuer              = builder.Configuration["Jwt:Issuer"],
             ValidAudience            = builder.Configuration["Jwt:Audience"],
-            IssuerSigningKey         = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
+            IssuerSigningKey         = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
+            RoleClaimType            = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
         };
     });
 
@@ -50,13 +57,13 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddAuthorization(o =>
 {
     o.AddPolicy("AdminOnly",         p => p.RequireRole("Administrator"));
-    o.AddPolicy("ProcurementAccess", p => p.RequireRole("Administrator","ProcurementManager"));
-    o.AddPolicy("WarehouseAccess",   p => p.RequireRole("Administrator","WarehouseManager"));
-    o.AddPolicy("LogisticsAccess",   p => p.RequireRole("Administrator","LogisticsCoordinator"));
-    o.AddPolicy("SalesAccess",       p => p.RequireRole("Administrator","SalesManager"));
-    o.AddPolicy("FinanceAccess",     p => p.RequireRole("Administrator","FinanceAnalyst"));
-    o.AddPolicy("SupplierPortal",    p => p.RequireRole("Administrator","Supplier"));
-    o.AddPolicy("CustomerPortal",    p => p.RequireRole("Administrator","Customer"));
+    o.AddPolicy("ProcurementAccess", p => p.RequireRole("Administrator", "ProcurementManager"));
+    o.AddPolicy("WarehouseAccess",   p => p.RequireRole("Administrator", "WarehouseManager"));
+    o.AddPolicy("LogisticsAccess",   p => p.RequireRole("Administrator", "LogisticsCoordinator"));
+    o.AddPolicy("SalesAccess",       p => p.RequireRole("Administrator", "SalesManager"));
+    o.AddPolicy("FinanceAccess",     p => p.RequireRole("Administrator", "FinanceAnalyst"));
+    o.AddPolicy("SupplierPortal",    p => p.RequireRole("Administrator", "Supplier"));
+    o.AddPolicy("CustomerPortal",    p => p.RequireRole("Administrator", "Customer"));
 });
 
 // Localization (NFR-7.7)
@@ -105,9 +112,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 
-    // Auto-migrate + seed roles/status types in dev so the Supplier module
-    // works out of the box. In a real deployment this would be a separate
-    // release step, not run on every startup.
     using var scope = app.Services.CreateScope();
     var db = scope.ServiceProvider.GetRequiredService<ScmDbContext>();
     await DbSeeder.SeedAsync(db);
