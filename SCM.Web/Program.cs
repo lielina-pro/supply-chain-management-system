@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using SCM.Application.Common.Interfaces;
 using SCM.Application.Suppliers.Interfaces;
 using SCM.Application.Suppliers.Services;
+using SCM.Application.Procurement.Interfaces;
+using SCM.Application.Procurement.Services;
 using SCM.Domain.Interfaces;
 using SCM.Infrastructure.Identity;
 using SCM.Infrastructure.Persistence;
@@ -15,6 +17,7 @@ builder.Services.AddDbContext<ScmDbContext>(o =>
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddScoped<ISupplierService, SupplierService>();
+builder.Services.AddScoped<IPurchaseOrderService, PurchaseOrderService>();
 
 builder.Services.AddControllersWithViews();
 
@@ -41,6 +44,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Supplier}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

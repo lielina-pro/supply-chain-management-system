@@ -1,0 +1,39 @@
+@model CreatePurchaseOrderViewModel
+@{
+    ViewData["Title"] = "New Purchase Order";
+}
+
+<div class="scm-page-header">
+    <div>
+        <div class="scm-eyebrow">Procurement</div>
+        <h1>New purchase order</h1>
+    </div>
+</div>
+
+<p class="scm-hint" style="margin-top:-0.75rem;margin-bottom:1.5rem;">
+    Enter the ID of an already-<strong>Approved</strong> purchase request and an <strong>Active</strong> supplier.
+</p>
+
+<form asp-action="Create" method="post" class="scm-form">
+    <div asp-validation-summary="ModelOnly" class="scm-alert scm-alert-error"></div>
+
+    <fieldset>
+        <legend>Order details</legend>
+        <div class="scm-field">
+            <label asp-for="PurchaseRequestId"></label>
+            <input asp-for="PurchaseRequestId" type="number" min="1" />
+            <span asp-validation-for="PurchaseRequestId" class="scm-field-error"></span>
+        </div>
+        <div class="scm-field">
+            <label asp-for="SupplierId"></label>
+            <input asp-for="SupplierId" type="number" min="1" />
+            <span asp-validation-for="SupplierId" class="scm-field-error"></span>
+        </div>
+        <div class="scm-field">
+            <label asp-for="ExpectedDeliveryDate"></label>
+            <input asp-for="ExpectedDeliveryDate" />
+        </div>
+    </fieldset>
+
+    <div><button type="submit" class="scm-btn">Generate draft</button></div>
+</form>

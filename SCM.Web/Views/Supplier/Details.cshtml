@@ -3,15 +3,22 @@
     ViewData["Title"] = Model.CompanyName;
 }
 
-<div class="scm-eyebrow">Supplier profile</div>
-<h1>@Model.CompanyName</h1>
-<p>
-    <span class="scm-stamp scm-stamp-@(Model.StatusName.ToLower())">@Model.StatusName</span>
-    <span class="scm-stamp scm-stamp-@(Model.VerificationStatus.ToLower())">@Model.VerificationStatus</span>
-</p>
+<div class="scm-page-header">
+    <div>
+        <div class="scm-eyebrow">Supplier profile</div>
+        <h1>@Model.CompanyName</h1>
+        <div class="scm-badge-row">
+            <span class="scm-tag scm-tag-@(Model.StatusName.ToLower())">@Model.StatusName</span>
+            <span class="scm-tag scm-tag-@(Model.VerificationStatus.ToLower())">@Model.VerificationStatus</span>
+        </div>
+    </div>
+    <div class="scm-page-actions">
+        <a class="scm-btn scm-btn-secondary" asp-action="Edit" asp-route-id="@Model.Id">Edit profile</a>
+    </div>
+</div>
 
 <dl class="scm-details">
-    <dt>Owner</dt>            <dd>@Model.FullName &middot; <span class="scm-mono">@Model.Email</span></dd>
+    <dt>Owner</dt>            <dd>@Model.FullName · <span class="scm-mono">@Model.Email</span></dd>
     <dt>Contact email</dt>    <dd class="scm-mono">@(Model.ContactEmail ?? "—")</dd>
     <dt>Contact phone</dt>    <dd class="scm-mono">@(Model.ContactPhone ?? "—")</dd>
     <dt>Address</dt>          <dd>@(Model.Address ?? "—")</dd>
@@ -21,9 +28,7 @@
     <dt>Registered</dt>       <dd class="scm-mono">@Model.CreatedAt.ToString("yyyy-MM-dd")</dd>
 </dl>
 
-<a class="scm-btn scm-btn-secondary" asp-action="Edit" asp-route-id="@Model.Id">Edit profile</a>
-
-<h2>Status &middot; welcome </h2>
+<h2>Status</h2>
 <form asp-action="ChangeStatus" asp-route-id="@Model.Id" method="post" class="scm-inline-form">
     <select name="statusName">
         <option value="Active" selected="@(Model.StatusName == "Active")">Active</option>
@@ -31,4 +36,4 @@
     </select>
     <button type="submit" class="scm-btn">Update status</button>
 </form>
-<p class="scm-hint">Only active suppliers may receive new purchase orders (BR-05).</p>
+<p class="scm-hint">Only active suppliers may receive new purchase orders.</p>

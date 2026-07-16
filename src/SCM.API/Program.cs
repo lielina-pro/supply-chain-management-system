@@ -35,6 +35,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 // Procurement module (FR-03) — Week 4: Bethel
 builder.Services.AddScoped<IPurchaseRequestService, PurchaseRequestService>();
 builder.Services.AddScoped<IPurchaseOrderService, PurchaseOrderService>();
+
 // JWT
 var jwtKey = builder.Configuration["Jwt:Key"]!;
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -57,13 +58,13 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddAuthorization(o =>
 {
     o.AddPolicy("AdminOnly",         p => p.RequireRole("Administrator"));
-    o.AddPolicy("ProcurementAccess", p => p.RequireRole("Administrator", "ProcurementManager"));
-    o.AddPolicy("WarehouseAccess",   p => p.RequireRole("Administrator", "WarehouseManager"));
-    o.AddPolicy("LogisticsAccess",   p => p.RequireRole("Administrator", "LogisticsCoordinator"));
-    o.AddPolicy("SalesAccess",       p => p.RequireRole("Administrator", "SalesManager"));
-    o.AddPolicy("FinanceAccess",     p => p.RequireRole("Administrator", "FinanceAnalyst"));
-    o.AddPolicy("SupplierPortal",    p => p.RequireRole("Administrator", "Supplier"));
-    o.AddPolicy("CustomerPortal",    p => p.RequireRole("Administrator", "Customer"));
+    o.AddPolicy("ProcurementAccess", p => p.RequireRole("Administrator","ProcurementManager"));
+    o.AddPolicy("WarehouseAccess",   p => p.RequireRole("Administrator","WarehouseManager"));
+    o.AddPolicy("LogisticsAccess",   p => p.RequireRole("Administrator","LogisticsCoordinator"));
+    o.AddPolicy("SalesAccess",       p => p.RequireRole("Administrator","SalesManager"));
+    o.AddPolicy("FinanceAccess",     p => p.RequireRole("Administrator","FinanceAnalyst"));
+    o.AddPolicy("SupplierPortal",    p => p.RequireRole("Administrator","Supplier"));
+    o.AddPolicy("CustomerPortal",    p => p.RequireRole("Administrator","Customer"));
 });
 
 // Localization (NFR-7.7)

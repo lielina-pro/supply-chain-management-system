@@ -1,10 +1,14 @@
 @model SupplierEditViewModel
 @{
-    ViewData["Title"] = "Edit Supplier Profile";
+    ViewData["Title"] = "Edit Supplier";
 }
 
-<div class="scm-eyebrow">welcome</div>
-<h1>Edit Supplier Profile</h1>
+<div class="scm-page-header">
+    <div>
+        <div class="scm-eyebrow">Supplier profile</div>
+        <h1>Edit supplier</h1>
+    </div>
+</div>
 
 <form asp-action="Edit" asp-route-id="@Model.Id" method="post" class="scm-form">
     <div asp-validation-summary="ModelOnly" class="scm-alert scm-alert-error"></div>
@@ -40,7 +44,7 @@
         </div>
     </fieldset>
 
-    <div style="display:flex; gap:0.75rem;">
+    <div class="scm-page-actions">
         <button type="submit" class="scm-btn">Save changes</button>
         <a class="scm-btn scm-btn-secondary" asp-action="Details" asp-route-id="@Model.Id">Cancel</a>
     </div>

@@ -1,0 +1,81 @@
+@model PurchaseOrderDetailViewModel
+@{
+    ViewData["Title"] = $"PO #{Model.Id}";
+    var isClosed = Model.StatusName is "Delivered" or "Cancelled";
+}
+
+<div class="scm-page-header">
+    <div>
+        <div class="scm-eyebrow">Purchase order</div>
+        <h1>PO #@Model.Id · @Model.SupplierCompanyName</h1>
+        <div class="scm-badge-row">
+            <span class="scm-tag scm-tag-@(Model.StatusName.ToLower())">@Model.StatusName</span>
+        </div>
+    </div>
+</div>
+
+<dl class="scm-details">
+    <dt>Purchase request</dt> <dd class="scm-mono">#@Model.PurchaseRequestId</dd>
+    <dt>Order date</dt>       <dd class="scm-mono">@Model.OrderDate.ToString("yyyy-MM-dd")</dd>
+    <dt>Expected delivery</dt><dd class="scm-mono">@(Model.ExpectedDeliveryDate?.ToString("yyyy-MM-dd") ?? "—")</dd>
+    <dt>Total amount</dt>    <dd class="scm-mono">@(Model.TotalAmount?.ToString("0.00") ?? "—")</dd>
+</dl>
+
+<h2>Line items</h2>
+<div class="scm-card">
+    <table class="scm-table">
+        <thead>
+            <tr><th>SKU</th><th>Product</th><th>Ordered</th><th>Received</th><th>Unit price</th></tr>
+        </thead>
+        <tbody>
+        @foreach (var i in Model.Items)
+        {
+            <tr>
+                <td class="scm-mono-cell">@i.SKU</td>
+                <td>@i.ProductName</td>
+                <td class="scm-mono-cell">@i.QuantityOrdered</td>
+                <td class="scm-mono-cell">@i.QuantityReceived</td>
+                <td class="scm-mono-cell">@(i.UnitPrice?.ToString("0.00") ?? "—")</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+
+@if (Model.StatusName == "Draft")
+{
+    <h2>Dispatch</h2>
+    <form asp-action="Send" asp-route-id="@Model.Id" method="post" class="scm-inline-form">
+        <button type="submit" class="scm-btn">Send to supplier</button>
+    </form>
+}
+
+@if (!isClosed)
+{
+    <h2>Record delivery</h2>
+    <form asp-action="RecordDelivery" method="post" class="scm-form">
+        <input type="hidden" name="PurchaseOrderId" value="@Model.Id" />
+        <fieldset>
+            <legend>Receiving warehouse</legend>
+            <div class="scm-field">
+                <label>Warehouse ID</label>
+                <input name="WarehouseId" type="number" min="1" value="1" />
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>Units received</legend>
+            @for (var idx = 0; idx < Model.Items.Count; idx++)
+            {
+                var item = Model.Items[idx];
+                var remaining = item.QuantityOrdered - item.QuantityReceived;
+                <div class="scm-field">
+                    <label>@item.ProductName (@item.SKU) · @remaining remaining</label>
+                    <input type="hidden" name="Lines[@idx].PurchaseOrderItemId" value="@item.Id" />
+                    <input name="Lines[@idx].QuantityReceived" type="number" min="0" max="@remaining" value="0" @(remaining == 0 ? "disabled" : "") />
+                </div>
+            }
+        </fieldset>
+        <div><button type="submit" class="scm-btn">Record delivery</button></div>
+    </form>
+    <p class="scm-hint">Fully receiving every line moves this order to Delivered; partial receipt moves it to PartiallyDelivered.</p>
+}

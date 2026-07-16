@@ -23,8 +23,13 @@ public class ScmDbContext : DbContext
     public DbSet<PurchaseOrder>           PurchaseOrders           => Set<PurchaseOrder>();
     public DbSet<PurchaseOrderItem>       PurchaseOrderItems       => Set<PurchaseOrderItem>();
 
-    // Other modules' DbSets (InventoryStock, CustomerOrders, Shipments, Payments,
-    // Notifications, DemandForecasts, ...) are added as each module is built in
+    // Delivery/inventory support for FR-03.5 (BR-04)
+    public DbSet<Warehouse>        Warehouses        => Set<Warehouse>();
+    public DbSet<InventoryStock>   InventoryStock    => Set<InventoryStock>();
+    public DbSet<StockTransaction> StockTransactions => Set<StockTransaction>();
+
+    // Other modules' DbSets (CustomerOrders, Shipments, Payments, Notifications,
+    // DemandForecasts, Racks, Bins, ...) are added as each module is built in
     // later weeks, per the 12-week plan.
 
     protected override void OnModelCreating(ModelBuilder mb)

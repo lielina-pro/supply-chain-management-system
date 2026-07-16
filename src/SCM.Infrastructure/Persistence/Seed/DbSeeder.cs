@@ -93,5 +93,12 @@ public static class DbSeeder
             );
             await db.SaveChangesAsync();
         }
+
+        // Week 4 - default warehouse so delivery recording (FR-03.5) has somewhere to receive into
+        if (!await db.Warehouses.AnyAsync())
+        {
+            db.Warehouses.Add(new Warehouse { Name = "Main Warehouse", Location = "Addis Ababa", IsActive = true, CreatedAt = DateTime.UtcNow });
+            await db.SaveChangesAsync();
+        }
     }
 }

@@ -20,6 +20,9 @@ public class UnitOfWork : IUnitOfWork
         Products         = new ProductRepository(context);
         PurchaseRequests = new PurchaseRequestRepository(context);
         PurchaseOrders   = new PurchaseOrderRepository(context);
+        Warehouses        = new WarehouseRepository(context);
+        InventoryStocks   = new InventoryStockRepository(context);
+        StockTransactions = new StockTransactionRepository(context);
     }
 
     public ISupplierRepository      Suppliers     { get; }
@@ -31,6 +34,9 @@ public class UnitOfWork : IUnitOfWork
     public IProductRepository         Products         { get; }
     public IPurchaseRequestRepository PurchaseRequests { get; }
     public IPurchaseOrderRepository   PurchaseOrders   { get; }
+    public IWarehouseRepository        Warehouses        { get; }
+    public IInventoryStockRepository   InventoryStocks   { get; }
+    public IStockTransactionRepository StockTransactions { get; }
 
     public Task<int> SaveChangesAsync(CancellationToken ct = default) => _context.SaveChangesAsync(ct);
 

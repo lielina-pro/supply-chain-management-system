@@ -3,9 +3,15 @@
     ViewData["Title"] = "Suppliers";
 }
 
-<div class="scm-eyebrow"> welcome &middot; Supplier register</div>
-<h1>Suppliers</h1>
-<p style="margin: 0 0 1.5rem;"><a class="scm-btn" asp-action="Register">+ Register new supplier</a></p>
+<div class="scm-page-header">
+    <div>
+        <div class="scm-eyebrow">System</div>
+        <h1>Suppliers</h1>
+    </div>
+    <div class="scm-page-actions">
+        <a class="scm-btn" asp-action="Register">+ Register supplier</a>
+    </div>
+</div>
 
 @if (!Model.Any())
 {
@@ -33,10 +39,10 @@ else
                 <tr>
                     <td>@s.CompanyName</td>
                     <td class="scm-mono-cell">@(s.ContactEmail ?? "—")</td>
-                    <td><span class="scm-stamp scm-stamp-@(s.VerificationStatus.ToLower())">@s.VerificationStatus</span></td>
-                    <td><span class="scm-stamp scm-stamp-@(s.StatusName.ToLower())">@s.StatusName</span></td>
+                    <td><span class="scm-tag scm-tag-@(s.VerificationStatus.ToLower())">@s.VerificationStatus</span></td>
+                    <td><span class="scm-tag scm-tag-@(s.StatusName.ToLower())">@s.StatusName</span></td>
                     <td class="scm-mono-cell">@(s.PerformanceRating?.ToString("0.00") ?? "—")</td>
-                    <td><a asp-action="Details" asp-route-id="@s.Id">View →</a></td>
+                    <td><a asp-action="Details" asp-route-id="@s.Id">View</a></td>
                 </tr>
             }
             </tbody>

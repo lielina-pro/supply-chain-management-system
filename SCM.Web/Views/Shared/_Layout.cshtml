@@ -1,44 +1,81 @@
+@{
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+    var action = ViewContext.RouteData.Values["action"]?.ToString() ?? "";
+    bool NavActive(string c, string? a = null) =>
+        controller.Equals(c, StringComparison.OrdinalIgnoreCase) &&
+        (a is null || action.Equals(a, StringComparison.OrdinalIgnoreCase));
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - SCM</title>
+    <title>@ViewData["Title"] - FlowChain</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
     <div class="scm-shell">
         <aside class="scm-rail">
-            <a class="scm-brand" asp-controller="Supplier" asp-action="Index">
-                <span class="scm-brand-mark"></span>SCM System
+            <a class="scm-brand" asp-controller="Home" asp-action="Index">
+                <span class="scm-brand-mark"></span>
+                FlowChain
             </a>
             <nav class="scm-rail-nav">
-                <div class="scm-rail-section-label">Suppliers</div>
-                <a asp-controller="Supplier" asp-action="Index">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="1"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-                    Supplier list
+                <div class="scm-rail-section-label">Operations</div>
+                <a asp-controller="Home" asp-action="Index" class="@(NavActive("Home") ? "active" : "")">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                    Dashboard
                 </a>
-                <a asp-controller="Supplier" asp-action="Register">
+                <a asp-controller="PurchaseOrder" asp-action="Index" class="@(NavActive("PurchaseOrder", "Index") || NavActive("PurchaseOrder", "Details") ? "active" : "")">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                    Purchase orders
+                </a>
+                <a asp-controller="PurchaseOrder" asp-action="Create" class="@(NavActive("PurchaseOrder", "Create") ? "active" : "")">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                    New purchase order
+                </a>
+
+                <div class="scm-rail-section-label">System</div>
+                <a asp-controller="Supplier" asp-action="Index" class="@(NavActive("Supplier", "Index") || NavActive("Supplier", "Details") || NavActive("Supplier", "Edit") ? "active" : "")">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="1"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                    Suppliers
+                </a>
+                <a asp-controller="Supplier" asp-action="Register" class="@(NavActive("Supplier", "Register") ? "active" : "")">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg>
                     Register supplier
                 </a>
             </nav>
         </aside>
 
-        <main class="scm-main">
-            @if (TempData["SuccessMessage"] != null)
-            {
-                <div class="scm-alert scm-alert-success">@TempData["SuccessMessage"]</div>
-            }
-            @if (TempData["ErrorMessage"] != null)
-            {
-                <div class="scm-alert scm-alert-error">@TempData["ErrorMessage"]</div>
-            }
-            @RenderBody()
-        </main>
+        <div class="scm-workspace">
+            <header class="scm-header">
+                <div class="scm-search">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                    <input type="search" placeholder="Search suppliers, orders, SKUs…" aria-label="Search" />
+                </div>
+                <div class="scm-header-actions">
+                    <button type="button" class="scm-header-btn" aria-label="Notifications">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                    </button>
+                    <div class="scm-avatar" aria-hidden="true">OP</div>
+                </div>
+            </header>
+
+            <main class="scm-main">
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="scm-alert scm-alert-success">@TempData["SuccessMessage"]</div>
+                }
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="scm-alert scm-alert-error">@TempData["ErrorMessage"]</div>
+                }
+                @RenderBody()
+            </main>
+        </div>
     </div>
 </body>
 </html>

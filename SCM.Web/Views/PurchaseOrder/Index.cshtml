@@ -1,0 +1,49 @@
+@model List<PurchaseOrderListItemViewModel>
+@{
+    ViewData["Title"] = "Purchase Orders";
+}
+
+<div class="scm-page-header">
+    <div>
+        <div class="scm-eyebrow">Procurement</div>
+        <h1>Purchase orders</h1>
+    </div>
+    <div class="scm-page-actions">
+        <a class="scm-btn" asp-action="Create">+ New purchase order</a>
+    </div>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="scm-empty">
+        No purchase orders yet. Generate one from an approved purchase request.
+    </div>
+}
+else
+{
+    <div class="scm-card">
+        <table class="scm-table">
+            <thead>
+                <tr>
+                    <th>Supplier</th>
+                    <th>Status</th>
+                    <th>Order date</th>
+                    <th>Total</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var o in Model)
+            {
+                <tr>
+                    <td>@o.SupplierCompanyName</td>
+                    <td><span class="scm-tag scm-tag-@(o.StatusName.ToLower())">@o.StatusName</span></td>
+                    <td class="scm-mono-cell">@o.OrderDate.ToString("yyyy-MM-dd")</td>
+                    <td class="scm-mono-cell">@(o.TotalAmount?.ToString("0.00") ?? "—")</td>
+                    <td><a asp-action="Details" asp-route-id="@o.Id">View</a></td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+}
