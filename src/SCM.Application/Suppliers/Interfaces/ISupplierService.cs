@@ -19,4 +19,7 @@ public interface ISupplierService
 
     /// <summary>FR-02.4 - Activate/deactivate a supplier (BR-05 gate). Records a StatusHistory row.</summary>
     Task<ServiceResult<bool>> UpdateStatusAsync(int id, UpdateSupplierStatusRequest req, int? actingUserId, CancellationToken ct = default);
+
+    /// <summary>FR-02.7 - Verify or reject a supplier (Admin only).</summary>
+    Task<ServiceResult<SupplierDto>> VerifyAsync(int id, VerifySupplierRequest req, int actingUserId, CancellationToken ct = default);
 }

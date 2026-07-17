@@ -3,11 +3,10 @@
    ======================================================================== */
 :root {
   /* Color */
-  --navy:           #0c192e;
+--navy:           #0c192e;
   --navy-hover:     #152540;
   --navy-muted:     #6b7d96;
   --navy-text:      #a8b8cc;
-
   --canvas:         #f8f9fb;
   --surface:        #ffffff;
   --border:         #e8ecf2;

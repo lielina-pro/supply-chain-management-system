@@ -153,7 +153,42 @@ public class SupplierService : ISupplierService
         await _uow.SaveChangesAsync(ct);
         return ServiceResult<bool>.Success(true);
     }
+public async Task<ServiceResult<SupplierDto>> VerifyAsync(int id, VerifySupplierRequest req, int actingUserId, CancellationToken ct = default)
+{
+    if (req.Decision is not ("Verified" or "Rejected"))
+        return ServiceResult<SupplierDto>.Failure("Decision must be 'Verified' or 'Rejected'.");
 
+    var supplier = await _uow.Suppliers.GetWithDetailsAsync(id, ct);
+    if (supplier is null)
+        return ServiceResult<SupplierDto>.Failure("Supplier not found.");
+
+    if (supplier.VerificationStatus == "Verified")
+        return ServiceResult<SupplierDto>.Failure("Supplier is already verified.");
+
+    var now = DateTime.UtcNow;
+
+    supplier.VerificationStatus = req.Decision;
+    supplier.VerifiedAt         = now;
+    supplier.VerifiedByUserId   = actingUserId;
+
+    _uow.Suppliers.Update(supplier);
+
+    // Audit log (BR-10)
+    await _uow.AuditLogs.AddAsync(new AuditLog
+    {
+        UserId     = actingUserId,
+        Action     = $"SupplierVerification_{req.Decision}",
+        EntityName = "Supplier",
+        EntityId   = supplier.Id,
+        Details    = req.Notes,
+        Timestamp  = now
+    }, ct);
+
+    await _uow.SaveChangesAsync(ct);
+
+    return ServiceResult<SupplierDto>.Success(
+        MapToDto(supplier, supplier.User, supplier.Status));
+}
     private static SupplierDto MapToDto(Supplier s, User user, StatusType status) => new()
     {
         Id                      = s.Id,

@@ -8,12 +8,13 @@ using SCM.Domain.Interfaces;
 using SCM.Infrastructure.Identity;
 using SCM.Infrastructure.Persistence;
 using SCM.Infrastructure.Persistence.Seed;
-
+using SCM.Application.Procurement.Interfaces;
+using SCM.Application.Procurement.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<ScmDbContext>(o =>
     o.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
+builder.Services.AddScoped<IPurchaseRequestService, PurchaseRequestService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddScoped<ISupplierService, SupplierService>();

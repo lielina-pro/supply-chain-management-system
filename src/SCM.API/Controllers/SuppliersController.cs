@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SCM.Application.Suppliers.DTOs;
 using SCM.Application.Suppliers.Interfaces;
-
+using System.Security.Claims;
 namespace SCM.API.Controllers;
 
 [ApiController]
@@ -60,4 +60,15 @@ public class SuppliersController : ControllerBase
         var result = await _svc.UpdateStatusAsync(id, req, actingUserId: null);
         return result.IsSuccess ? Ok() : BadRequest(new { error = result.Error });
     }
+    /// <summary>FR-02.7 - Verify or reject a supplier (Admin only).</summary>
+[HttpPatch("{id:int}/verify")]
+[Authorize(Policy = "AdminOnly")]
+public async Task<IActionResult> Verify(int id, [FromBody] VerifySupplierRequest req)
+{
+    var actingUserId = int.Parse(User.FindFirstValue(System.Security.Claims.ClaimTypes.NameIdentifier)
+        ?? User.FindFirstValue("sub") ?? "0");
+
+    var result = await _svc.VerifyAsync(id, req, actingUserId);
+    return result.IsSuccess ? Ok(result.Value) : BadRequest(new { error = result.Error });
+}
 }
