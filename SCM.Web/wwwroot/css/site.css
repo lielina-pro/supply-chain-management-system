@@ -34,7 +34,8 @@
   --pending-tint:   #fffbeb;
 
   /* Type */
-  --font: 'Inter', -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Sora', 'Segoe UI', sans-serif;
+  --font: 'Source Sans 3', 'Segoe UI', sans-serif;
   --font-mono: 'IBM Plex Mono', 'Consolas', monospace;
 
   /* Shape */
@@ -98,32 +99,31 @@ a:hover { color: var(--blue-dark); }
   display: flex;
   align-items: center;
   gap: 0.65rem;
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-weight: 600;
   font-size: 1.05rem;
   color: #fff;
   text-decoration: none;
   padding: 0 0.5rem;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.03em;
 }
 
 .scm-brand-mark {
-  width: 32px;
-  height: 32px;
-  border-radius: 10px;
-  background: var(--blue-gradient);
+  width: 30px;
+  height: 30px;
+  border-radius: 7px;
+  background: var(--blue);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  box-shadow: 0 4px 12px rgba(59, 108, 245, 0.35);
 }
 
 .scm-brand-mark::after {
   content: '';
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
   border: 2px solid #fff;
-  border-radius: 3px;
   transform: rotate(45deg);
 }
 
@@ -254,11 +254,13 @@ a:hover { color: var(--blue-dark); }
 .scm-avatar {
   width: 36px;
   height: 36px;
-  border-radius: 50%;
-  background: var(--blue-gradient);
+  border-radius: 8px;
+  background: var(--navy);
   color: #fff;
-  font-size: 0.78rem;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
   font-weight: 600;
+  letter-spacing: -0.02em;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -299,193 +301,332 @@ a:hover { color: var(--blue-dark); }
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--ink-muted);
+  margin: 0;
 }
 
 h1 {
-  font-size: 1.65rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 600;
+  letter-spacing: -0.035em;
   margin: 0 0 0.35rem;
   color: var(--ink);
 }
 
 h2 {
-  font-size: 0.95rem;
+  font-family: var(--font-display);
+  font-size: 1rem;
   font-weight: 600;
   color: var(--ink);
   margin: 2rem 0 0.85rem;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.025em;
 }
 
 .scm-mono { font-family: var(--font-mono); font-size: 0.9em; }
 
 /* ---------------------------------------------------------------------
-   Dashboard grid
+   Dashboard
    --------------------------------------------------------------------- */
-.scm-dashboard-grid {
+.scm-dashboard-layout {
   display: grid;
-  grid-template-columns: 1.4fr 1fr 1fr;
-  gap: 1.1rem;
-  margin-bottom: 1.1rem;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 1.25rem;
+  align-items: start;
 }
 
-.scm-dashboard-row {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.1rem;
-  margin-bottom: 1.1rem;
+.scm-dashboard-primary {
+  min-width: 0;
 }
 
-.scm-dashboard-bottom {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: 1.1rem;
-}
-
-/* Hero metric card */
-.scm-hero-card {
-  background: var(--blue-gradient);
-  border-radius: var(--radius-lg);
-  padding: 1.5rem 1.65rem;
-  color: #fff;
-  box-shadow: 0 8px 28px rgba(59, 108, 245, 0.28);
+.scm-dashboard-aside {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  min-height: 200px;
+  gap: 1.1rem;
+  position: sticky;
+  top: calc(var(--header-h) + 1rem);
 }
 
-.scm-hero-card .scm-eyebrow { color: rgba(255, 255, 255, 0.7); }
-
-.scm-hero-metric {
-  font-size: 2.75rem;
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1.1;
+.scm-quick-stats {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
-.scm-hero-sub {
-  font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.8);
+.scm-quick-stat {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.scm-quick-stat:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.scm-quick-stat dt {
+  font-size: 0.88rem;
+  color: var(--ink-soft);
   margin: 0;
 }
 
-.scm-hero-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  background: rgba(255, 255, 255, 0.18);
-  border-radius: var(--radius-pill);
-  padding: 0.25rem 0.65rem;
-  font-size: 0.78rem;
+.scm-quick-stat dd {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
   font-weight: 600;
-  color: #fff;
-  width: fit-content;
-  margin-top: 0.25rem;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+.scm-quick-stat-meta {
+  font-family: var(--font);
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--ink-muted);
+  letter-spacing: 0;
+}
+
+/* Hero — white surface + left accent + gauge (not a solid brand fill) */
+.scm-hero-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius);
+  padding: 1.5rem 1.75rem;
+  box-shadow: var(--shadow-sm);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1.75rem;
+  align-items: center;
+}
+
+.scm-hero-gauge {
+  position: relative;
+  width: 112px;
+  height: 112px;
+  flex-shrink: 0;
+}
+
+.scm-gauge-svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.scm-gauge-track {
+  fill: none;
+  stroke: var(--border);
+  stroke-width: 8;
+}
+
+.scm-gauge-fill {
+  fill: none;
+  stroke: var(--blue);
+  stroke-width: 8;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.4s ease;
+}
+
+.scm-gauge-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.scm-gauge-value {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+  line-height: 1;
+}
+
+.scm-gauge-label {
+  font-size: 0.68rem;
+  color: var(--ink-muted);
+  margin-top: 0.2rem;
+}
+
+.scm-hero-title {
+  margin: 0 0 0.25rem;
+  font-size: 1.05rem;
+}
+
+.scm-hero-sub {
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+  margin: 0 0 1.15rem;
 }
 
 .scm-hero-stats {
   display: flex;
-  gap: 1.5rem;
-  margin-top: auto;
-  padding-top: 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
-}
-
-.scm-hero-stat-label {
-  font-size: 0.68rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: rgba(255, 255, 255, 0.6);
-  margin-bottom: 0.15rem;
+  gap: 2rem;
+  flex-wrap: wrap;
 }
 
 .scm-hero-stat-value {
-  font-size: 1.15rem;
-  font-weight: 700;
-}
-
-/* Metric cards */
-.scm-metric-card {
-  background: var(--surface);
-  border-radius: var(--radius);
-  padding: 1.25rem 1.35rem;
-  box-shadow: var(--shadow);
-  border: 1px solid var(--border-soft);
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-}
-
-.scm-metric-card .scm-eyebrow { margin-bottom: 0.15rem; }
-
-.scm-metric-value {
-  font-size: 2rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
   color: var(--ink);
   line-height: 1.15;
 }
 
-.scm-metric-delta {
-  font-size: 0.8rem;
-  font-weight: 600;
+.scm-hero-stat-label {
+  font-size: 0.82rem;
+  color: var(--ink-muted);
   margin-top: 0.15rem;
 }
 
-.scm-metric-delta--up   { color: var(--success); }
-.scm-metric-delta--down { color: var(--danger); }
-.scm-metric-delta--warn { color: var(--warning); }
-.scm-metric-delta--info { color: var(--ink-muted); }
+/* Pipeline strip — sentence-case labels, no orphan underlines */
+.scm-pipeline {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-top: 1.1rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.scm-pipeline-item {
+  background: var(--surface);
+  padding: 1.15rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.scm-pipeline-value {
+  font-family: var(--font-display);
+  font-size: 1.65rem;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+  line-height: 1.1;
+}
+
+.scm-pipeline-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.scm-pipeline-hint {
+  font-size: 0.78rem;
+  color: var(--ink-muted);
+}
+
+/* Deliberate empty state */
+.scm-empty-state {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 3rem 2rem;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.scm-empty-state-mark {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 1.25rem;
+  border-radius: 14px;
+  background: var(--blue-tint);
+  color: var(--blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scm-empty-state-mark svg { width: 28px; height: 28px; }
+
+.scm-empty-state-title {
+  margin: 0 0 0.4rem;
+  font-size: 1.2rem;
+}
+
+.scm-empty-state-copy {
+  margin: 0 auto 1.5rem;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+  max-width: 32ch;
+}
+
+.scm-empty-state .scm-page-actions {
+  justify-content: center;
+}
 
 /* Panel cards */
 .scm-panel {
   background: var(--surface);
   border-radius: var(--radius);
   padding: 1.25rem 1.35rem;
-  box-shadow: var(--shadow);
-  border: 1px solid var(--border-soft);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
 }
 
 .scm-panel-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 0.75rem;
   margin-bottom: 1rem;
 }
 
 .scm-panel-header h2 {
   margin: 0;
-  font-size: 0.95rem;
+  font-size: 1rem;
 }
 
 .scm-panel-link {
   font-size: 0.82rem;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--blue);
 }
 
-/* Alert list */
+/* Alert list — icon = type, badge = severity (same pill size) */
 .scm-alert-list {
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
+  gap: 0.5rem;
 }
 
 .scm-alert-item {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 0.75rem;
-  padding: 0.75rem 0.85rem;
+  padding: 0.7rem 0.75rem;
   border-radius: var(--radius-sm);
   background: var(--canvas);
   border: 1px solid var(--border-soft);
 }
 
 .scm-alert-icon {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -496,7 +637,7 @@ h2 {
 .scm-alert-icon--warning { background: var(--warning-tint); color: var(--warning); }
 .scm-alert-icon--info    { background: var(--info-tint);    color: var(--info); }
 
-.scm-alert-icon svg { width: 16px; height: 16px; }
+.scm-alert-icon svg { width: 14px; height: 14px; }
 
 .scm-alert-body { flex: 1; min-width: 0; }
 
@@ -512,24 +653,6 @@ h2 {
   color: var(--ink-muted);
   margin: 0;
 }
-
-/* Chart placeholder */
-.scm-chart-placeholder {
-  height: 120px;
-  display: flex;
-  align-items: flex-end;
-  gap: 0.35rem;
-  padding-top: 0.5rem;
-}
-
-.scm-chart-bar {
-  flex: 1;
-  border-radius: 4px 4px 0 0;
-  background: var(--blue-tint);
-  position: relative;
-}
-
-.scm-chart-bar--active { background: var(--blue); opacity: 0.85; }
 
 /* ---------------------------------------------------------------------
    Cards / tables
@@ -576,6 +699,17 @@ h2 {
   font-size: 0.85rem;
 }
 
+.scm-table--flush {
+  margin: 0 -0.35rem;
+  width: calc(100% + 0.7rem);
+}
+
+.scm-table--flush th,
+.scm-table--flush td {
+  padding-left: 0.85rem;
+  padding-right: 0.85rem;
+}
+
 /* ---------------------------------------------------------------------
    Status tags (replaces stamped badges)
    --------------------------------------------------------------------- */
@@ -583,18 +717,18 @@ h2 {
 .scm-tag {
   display: inline-flex;
   align-items: center;
-  font-size: 0.72rem;
+  justify-content: center;
+  height: 22px;
+  font-size: 0.7rem;
   font-weight: 600;
-  text-transform: lowercase;
-  padding: 0.2rem 0.6rem;
-  border-radius: var(--radius-pill);
+  text-transform: capitalize;
+  padding: 0 0.55rem;
+  border-radius: 4px;
   border: none;
   white-space: nowrap;
   letter-spacing: 0.01em;
+  line-height: 1;
 }
-
-.scm-stamp::first-letter,
-.scm-tag::first-letter { text-transform: uppercase; }
 
 .scm-stamp-active,   .scm-tag-active   { color: var(--success); background: var(--success-tint); }
 .scm-stamp-inactive, .scm-tag-inactive { color: var(--danger);  background: var(--danger-tint); }
@@ -622,12 +756,13 @@ h2 {
   gap: 0.4rem;
   background: var(--navy);
   color: #fff;
-  font-family: var(--font);
+  font-family: var(--font-display);
   font-weight: 600;
-  font-size: 0.85rem;
-  padding: 0.6rem 1.2rem;
+  font-size: 0.82rem;
+  letter-spacing: -0.01em;
+  padding: 0.6rem 1.15rem;
   border: none;
-  border-radius: var(--radius-pill);
+  border-radius: 8px;
   text-decoration: none;
   cursor: pointer;
   transition: background 0.15s ease, box-shadow 0.15s ease;
@@ -655,10 +790,12 @@ h2 {
   background: transparent;
   color: var(--ink-soft);
   border: 1px solid var(--border);
-  border-radius: var(--radius-pill);
+  border-radius: 8px;
   padding: 0.5rem 1rem;
-  font-size: 0.82rem;
-  font-weight: 500;
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
 .scm-btn-ghost:hover {
@@ -819,10 +956,9 @@ h2 {
    Responsive
    --------------------------------------------------------------------- */
 @media (max-width: 1100px) {
-  .scm-dashboard-grid { grid-template-columns: 1fr 1fr; }
-  .scm-dashboard-grid .scm-hero-card { grid-column: 1 / -1; }
-  .scm-dashboard-row { grid-template-columns: 1fr 1fr; }
-  .scm-dashboard-bottom { grid-template-columns: 1fr; }
+  .scm-dashboard-layout { grid-template-columns: 1fr; }
+  .scm-dashboard-aside { position: static; }
+  .scm-pipeline { grid-template-columns: 1fr 1fr; }
 }
 
 @media (max-width: 768px) {
@@ -842,8 +978,8 @@ h2 {
   .scm-search { min-width: 0; }
   .scm-main { padding: 1.25rem; }
   .scm-details { grid-template-columns: 1fr; }
-  .scm-dashboard-grid,
-  .scm-dashboard-row { grid-template-columns: 1fr; }
+  .scm-hero-card { grid-template-columns: 1fr; justify-items: start; }
+  .scm-pipeline { grid-template-columns: 1fr 1fr; }
   .scm-page-header { flex-direction: column; }
 }
 

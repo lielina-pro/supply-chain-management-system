@@ -67,13 +67,23 @@ public class HomeController : Controller
             });
         }
 
-        if (alerts.Count == 0)
+        if (alerts.Count == 0 && orderList.Count > 0)
         {
             alerts.Add(new DashboardAlertViewModel
             {
                 Title = "All systems operational",
                 Description = "No critical alerts at this time.",
                 Severity = "info"
+            });
+        }
+        else if (alerts.Count == 0)
+        {
+            alerts.Add(new DashboardAlertViewModel
+            {
+                Title = "Ready to get started",
+                Description = "Create a purchase order to begin tracking fulfillment.",
+                Severity = "info",
+                LinkUrl = Url.Action("Create", "PurchaseOrder")
             });
         }
 
