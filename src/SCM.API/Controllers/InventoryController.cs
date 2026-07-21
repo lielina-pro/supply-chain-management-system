@@ -12,7 +12,7 @@ public class InventoryController : ControllerBase
     private readonly IInventoryService _svc;
     public InventoryController(IInventoryService svc) => _svc = svc;
 
-    /// <summary>FR-04.5 – Real-time stock levels</summary>
+    //<summary>FR-04.5 – Real-time stock levels</summary>
     [HttpGet]
     [Authorize(Policy = "WarehouseAccess")]
     public async Task<IActionResult> GetStockLevels()
@@ -21,7 +21,7 @@ public class InventoryController : ControllerBase
         return Ok(levels);
     }
 
-    /// <summary>FR-04.1 – Record stock receipt</summary>
+    //<summary>FR-04.1 – Record stock receipt</summary>
     [HttpPost("receipts")]
     [Authorize(Policy = "WarehouseAccess")]
     public async Task<IActionResult> Receipt([FromBody] object req)
@@ -31,7 +31,7 @@ public class InventoryController : ControllerBase
         return result.IsSuccess ? Ok() : BadRequest(result.Error);
     }
 
-    /// <summary>FR-04.4 – Stock adjustment (BR-04: always logged)</summary>
+    //<summary>FR-04.4 – Stock adjustment (BR-04: always logged)</summary>
     [HttpPost("adjustments")]
     [Authorize(Policy = "WarehouseAccess")]
     public async Task<IActionResult> Adjust([FromBody] object req)

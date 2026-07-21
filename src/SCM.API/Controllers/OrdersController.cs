@@ -12,7 +12,7 @@ public class OrdersController : ControllerBase
     private readonly IOrderService _svc;
     public OrdersController(IOrderService svc) => _svc = svc;
 
-    /// <summary>FR-06.1 – Customer places order</summary>
+    //<summary>FR-06.1 – Customer places order</summary>
     [HttpPost]
     [Authorize(Policy = "CustomerPortal")]
     public async Task<IActionResult> PlaceOrder([FromBody] object req)
@@ -22,7 +22,7 @@ public class OrdersController : ControllerBase
         return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
     }
 
-    /// <summary>FR-06.4 / FR-06.6 – Track order status (real-time)</summary>
+    //<summary>FR-06.4 / FR-06.6 – Track order status (real-time)</summary>
     [HttpGet("{id:int}/status")]
     public async Task<IActionResult> TrackOrder(int id)
     {
@@ -30,7 +30,7 @@ public class OrdersController : ControllerBase
         return status is null ? NotFound() : Ok(status);
     }
 
-    /// <summary>FR-06.5 – Cancel order (BR-11: only pre-shipment)</summary>
+    //<summary>FR-06.5 – Cancel order (BR-11: only pre-shipment)</summary>
     [HttpPost("{id:int}/cancel")]
     public async Task<IActionResult> Cancel(int id)
     {

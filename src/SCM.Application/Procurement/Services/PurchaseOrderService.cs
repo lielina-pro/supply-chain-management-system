@@ -32,7 +32,7 @@ public class PurchaseOrderService : IPurchaseOrderService
 
         if (request.Status.StatusName != "Approved")
             return ServiceResult<PurchaseOrderDto>.Failure(
-                "BR-02: A purchase order can only be created from an approved purchase request.");
+                " A purchase order can only be created from an approved purchase request.");
 
         if (request.PurchaseOrders.Any())
             return ServiceResult<PurchaseOrderDto>.Failure(

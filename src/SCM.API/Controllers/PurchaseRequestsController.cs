@@ -58,7 +58,7 @@ public class PurchaseRequestsController : ControllerBase
     {
         // Force decision to valid options for this step
         if (req.Decision is not ("Validated" or "Declined" or "AdjustmentRequested"))
-            return BadRequest("Decision must be Validated, Declined, or AdjustmentRequested.");
+            return BadRequest("Decision must be Validated");
 
         var result = await _svc.RecordApprovalAsync(id, "WarehouseManager", req, CurrentUserId);
         return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
@@ -70,7 +70,7 @@ public class PurchaseRequestsController : ControllerBase
     public async Task<IActionResult> Approve(int id, [FromBody] RecordApprovalRequest req)
     {
         if (req.Decision is not ("Approved" or "Declined" or "AdjustmentRequested"))
-            return BadRequest("Decision must be Approved, Declined, or AdjustmentRequested.");
+            return BadRequest("Decision must be Validated");
 
         var result = await _svc.RecordApprovalAsync(id, "FinanceAnalyst", req, CurrentUserId);
         return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
