@@ -32,7 +32,6 @@
                 </div>
                 <h2 class="scm-empty-state-title">No purchase orders yet</h2>
                 <p class="scm-empty-state-copy">
-                    Generate your first PO from an approved request to start tracking fulfillment here.
                 </p>
                 <div class="scm-page-actions">
                     <a class="scm-btn" asp-controller="PurchaseOrder" asp-action="Create">Create purchase order</a>
@@ -142,7 +141,7 @@
             <dl class="scm-quick-stats">
                 <div class="scm-quick-stat">
                     <dt>Suppliers</dt>
-                    <dd>@Model.TotalSuppliers <span class="scm-quick-stat-meta">(@Model.ActiveSuppliers active)</span></dd>
+                    <dd>@Model.TotalSuppliers <span class="scm-quick-stat-meta"> </span></dd>
                 </div>
                 <div class="scm-quick-stat">
                     <dt>Purchase orders</dt>

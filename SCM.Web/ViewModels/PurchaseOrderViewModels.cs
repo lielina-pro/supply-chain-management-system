@@ -39,10 +39,10 @@ public class PurchaseOrderDetailViewModel
 /// </summary>
 public class CreatePurchaseOrderViewModel
 {
-    [Required, Display(Name = "Purchase request ID (must be Approved)")]
+    [Required, Display(Name = "Purchase request ID ")]
     public int PurchaseRequestId { get; set; }
 
-    [Required, Display(Name = "Supplier ID (must be Active)")]
+    [Required, Display(Name = "Supplier ID ")]
     public int SupplierId { get; set; }
 
     [Display(Name = "Expected delivery date")]
